@@ -1,0 +1,37 @@
+<!-- alert.ejs -->
+
+<div id="alertContainer" class="alert-container">
+  <!-- Messages will be appended here dynamically -->
+</div>
+
+<script>
+  function showAlert(message, type) {
+    const alertContainer = document.getElementById("alertContainer");
+    const alertDiv = document.createElement("div");
+    alertDiv.classList.add("alert");
+
+    if (type === "success") {
+      alertDiv.classList.add("success");
+    } else if (type === "error") {
+      alertDiv.classList.add("error");
+    }
+
+    alertDiv.innerHTML = `<p>${message}</p>`;
+    alertContainer.appendChild(alertDiv);
+
+    setTimeout(() => {
+      alertDiv.remove();
+    }, 5000);
+  }
+
+  const eventSource = new EventSource("/admin/events");
+
+  eventSource.onmessage = function (event) {
+    const data = JSON.parse(event.data);
+
+    if (data.length > 0) {
+      const message = `You have ${data.length} product(s) below the stock threshold`;
+      showAlert(message, "error");
+    }
+  };
+</script>

@@ -1,0 +1,29 @@
+</div>
+</div>
+<script>
+    function showAlert(message, type) {
+        const alertContainer = document.getElementById('alertContainer');
+        const alertDiv = document.createElement('div');
+        alertDiv.classList.add('alert');
+        if (type === 'success') {
+        alertDiv.classList.add('success');
+        } else if (type === 'error') {
+        alertDiv.classList.add('error');
+        }
+        alertDiv.innerHTML = `<p>${message}</p>`;
+        alertContainer.appendChild(alertDiv);
+        setTimeout(() => {
+        alertDiv.remove();
+        }, 5000);
+    }
+    const eventSource = new EventSource('/admin/events');
+
+    eventSource.onmessage = function(event) {
+        const data = JSON.parse(event.data);
+        console.log('Products below threshold:', data);
+        showAlert(`You have ${data.length} out of stock products`, 'error')
+        // Handle the alert as needed, e.g., display a notification to the user
+    };
+</script>
+</body>
+</html>
