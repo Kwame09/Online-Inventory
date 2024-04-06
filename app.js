@@ -38,7 +38,7 @@ app.use(express.static("static"));
 var connection = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "179638",
+  password: "",
   database: "inventorydb",
 });
 
@@ -263,7 +263,6 @@ app.get("/admin", (req, res) => {
 });
 //login script
 app.post("/admin", function (req, res) {
-  console.log(req.body);
   let usr = req.body;
   // res.render('login', {title: "Failed! Try again", failed: true});
 
@@ -271,13 +270,10 @@ app.post("/admin", function (req, res) {
     `SELECT * from admins where username="${usr.uname}"`,
     function (err, rows, fields) {
       if (!err) {
-        console.log("The solution is: ", rows[0]);
-
         if (
           typeof rows[0] != "undefined" &&
           pwVerify(usr.pwd, rows[0].password)
         ) {
-          console.log("Successful Login");
           req.session.admin = {
             id: rows[0].id,
             username: rows[0].username,
@@ -483,9 +479,10 @@ app.get("/admin/events", (req, res) => {
           console.error("Error querying database: " + error.stack);
           return;
         }
-
-        // Send SSE message with product info
-        res.write(`data: ${JSON.stringify(results)}\n\n`);
+        else if (results.length > 0) {
+          // Send SSE message with product info
+          res.write(`data: ${JSON.stringify(results)}\n\n`);
+        }
       }
     );
   });

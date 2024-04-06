@@ -38,8 +38,8 @@ CREATE TABLE `admins` (
 --
 
 INSERT INTO `admins` (`id`, `username`, `password`) VALUES
-(1, 'admin', '$2a$10$I3qKkNLEUGVIqbGCNyydSOovA5t.0385z7.BQI2vc8IuHms1U3dgi');
-
+(1, 'admin', '$2a$10$RLgmJcHDZRo0YGZSwpx4oe./TK.5ru7sqdX5oRMIMUwvDsYQdI/R6');
+-- Admin password is administrator
 -- --------------------------------------------------------
 
 --
